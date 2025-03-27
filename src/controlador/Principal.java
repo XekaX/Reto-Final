@@ -1,21 +1,56 @@
 package controlador;
 
-
+import excepciones.LoginException;
 import modelo.Cliente;
-import vista.VentanaPrincipal;
+import modelo.Pelicula;
+import modelo.Trabajador;
+import modelo.Usuario;
+import vista.VentanaLog;
 
 public class Principal {
 	private static Dao dao = new DaoImplementacionMSql();
 
 	public static void main(String[] args) {
-		VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
-		ventanaPrincipal.setVisible(true);
+		VentanaLog ventana = new VentanaLog();
+		ventana.setVisible(true);
+	}
+
+	public static Usuario login(Usuario trabajador) throws LoginException {
+		Usuario usu = dao.login(trabajador);
+
+		return usu;
+
 	}
 
 	public static void altaCliente(Cliente clien) {
 		dao.altaClientes(clien);
 	}
 
+	public static void altaTrabajador(Trabajador trab) {
+		dao.altaTrabajador(trab);
+
+	}
+
+	public static void bajaPropietario(Trabajador trab) {
+		dao.eliminarTrabajador(trab);
+
+	}
+
+	public static void modificarTrabajador(Trabajador trab) {
+		dao.modificarTrabajador(trab);
+
+	}
+
+	public static void altaPelicula(Pelicula peli) {
+		dao.añadirPelicula(peli);
+	}
+
+	public static void eliminarPelicula(Pelicula peli) {
+		dao.eliminarPeliculas(peli);
+	}
+
+	public static void modificarPelicula(Pelicula peli) {
+		dao.modificarPelicula(peli);
+	}
+
 }
-
-

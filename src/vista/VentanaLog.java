@@ -16,7 +16,12 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import controlador.Principal;
+import excepciones.LoginException;
 import modelo.Trabajador;
+import modelo.Cliente;
+import modelo.Tipo;
+import modelo.Usuario;
 
 public class VentanaLog extends JFrame implements ActionListener{
 
@@ -27,6 +32,7 @@ public class VentanaLog extends JFrame implements ActionListener{
 	private JButton btnComprobar;
 	private JButton btnCancelar;
 	private JPasswordField textContraseña;
+	
 
 	/**
 	 * Launch the application.
@@ -47,6 +53,7 @@ public class VentanaLog extends JFrame implements ActionListener{
 	 * Create the frame.
 	 */
 	public VentanaLog() {
+		
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -111,11 +118,33 @@ public class VentanaLog extends JFrame implements ActionListener{
 		dialog.setVisible(true);	
 		
 	}
+	
 	private void comprobar() {
-		Trabajador usuario = new Trabajador();
-		usuario.setIdT(textUsuario.getText());
+		Usuario usuario = new Usuario();
+		usuario.setIdentificacion(textUsuario.getText());
 		usuario.setContrasenia(new String (textContraseña.getPassword()));
 		
+		try {
+			Usuario usu = Principal.login(usuario);
+			
+			if (usu instanceof Trabajador) {
+				System.out.println("Usuario recibidi del tipo trabajador: " + ((Trabajador) usu).getTipo());
+				if (((Trabajador) usu).getTipo().equals(Tipo.ADMIN)) {
+					
+					VentanaAdmin ven = new VentanaAdmin();
+					ven.setVisible(true);
+				}else {
+					VentanaTrabajador ven = new VentanaTrabajador();
+					ven.setVisible(true);
+				}
+			} else if (usu instanceof Cliente)  {
+				 VentanaCliente ven = new VentanaCliente();
+				 ven.setVisible(true);
+			}
+			
+		} catch (LoginException e) {
+			e.visualizarMensaje();
+		}	
 	}
 	private void cancelar() {
 		dispose();

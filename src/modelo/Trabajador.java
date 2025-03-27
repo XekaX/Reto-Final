@@ -1,31 +1,10 @@
 package modelo;
 
-public class Trabajador {
-	private String idT;
-	private String contrasenia;
+public class Trabajador extends Usuario{
+	
 	private String nombre;
 	private float sueldo;
 	private Tipo tipo;
-	
-	public enum Tipo{
-		Admin, Trabajador;
-	}
-
-	public String getIdT() {
-		return idT;
-	}
-
-	public void setIdT(String idT) {
-		this.idT = idT;
-	}
-
-	public String getContrasenia() {
-		return contrasenia;
-	}
-
-	public void setContrasenia(String contrasenia) {
-		this.contrasenia = contrasenia;
-	}
 
 	public String getNombre() {
 		return nombre;
@@ -51,11 +30,7 @@ public class Trabajador {
 		this.tipo = tipo;
 	}
 
-	@Override
-	public String toString() {
-		return "Trabajador [idT=" + idT + ", contrasenia=" + contrasenia + ", nombre=" + nombre + ", sueldo=" + sueldo
-				+ ", tipo=" + tipo + "]";
-	}
+	
 	
 	
 		
