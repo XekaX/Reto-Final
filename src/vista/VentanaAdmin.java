@@ -152,10 +152,10 @@ public class VentanaAdmin extends JDialog implements ActionListener {
 	private void alta() {
 		Trabajador trab = new Trabajador();
 		trab.setIdentificacion(textID.getText());
-		trab.setContrasenia(textNombre.getText());
+		trab.setNombre(textNombre.getText());
 		trab.setContrasenia(textContraseña.getText());
 		 trab.setSueldo(Float.parseFloat(textSueldo.getText()));
-		 trab.setTipo(Tipo.valueOf("Trabajador"));
+		 trab.setTipo(Tipo.valueOf("TRABAJADOR"));
 		Principal.altaTrabajador(trab);
 		dispose();		
 
