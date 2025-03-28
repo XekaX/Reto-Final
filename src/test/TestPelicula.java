@@ -72,7 +72,7 @@ class TestPelicula {
 	
 	@Test
 	public void testSetCalificacion () {
-		peli.setCalificacion((float) 4.699999809265137);
+		peli.setCalificacion((float)4.699999809265137);
 		assertEquals(4.699999809265137, peli.getCalificacion());
 	} 
 	
