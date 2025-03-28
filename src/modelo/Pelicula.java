@@ -7,8 +7,7 @@ public class Pelicula {
 	private int duracion;
 	private float calificacion;
 	private String idG;
-	private String idT;
-	private String genero;
+	
 	
 	public String getIdP() {
 		return idP;
@@ -46,23 +45,11 @@ public class Pelicula {
 	public void setIdG(String idG) {
 		this.idG = idG;
 	}
-	public String getIdT() {
-		return idT;
-	}
-	public void setIdT(String idT) {
-		this.idT = idT;
-	}
 	
-	public String getGenero() {
-		return genero;
-	}
-	public void setGenero(String genero) {
-		this.genero = genero;
-	}
 	@Override
 	public String toString() {
 		return "Pelicula [idP=" + idP + ", nombre=" + nombre + ", precio=" + precio + ", duracion=" + duracion
-				+ ", calificacion=" + calificacion + ", idG=" + idG + ", idT=" + idT + ", genero=" + genero + "]";
+				+ ", calificacion=" + calificacion + ", idG=" + idG + ", genero=" + "]";
 	}
 
 }

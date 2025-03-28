@@ -11,6 +11,7 @@ import javax.swing.border.EmptyBorder;
 import controlador.Principal;
 import modelo.Pelicula;
 import modelo.Trabajador;
+import modelo.Usuario;
 
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -18,6 +19,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class VentanaTrabajador extends JDialog implements ActionListener{
 
@@ -31,7 +34,8 @@ public class VentanaTrabajador extends JDialog implements ActionListener{
 	private JButton btnAñadir;
 	private JButton btnEliminar;
 	private JButton btnModificar;
-	private JTextField textGenero;
+	private JComboBox cmbGenero;
+	private Usuario usuario;
 
 	/**
 	 * Launch the application.
@@ -48,8 +52,10 @@ public class VentanaTrabajador extends JDialog implements ActionListener{
 
 	/**
 	 * Create the dialog.
+	 * @param usuario 
 	 */
-	public VentanaTrabajador() {
+	public VentanaTrabajador(Usuario user) {
+		this.usuario = user;
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -130,23 +136,15 @@ public class VentanaTrabajador extends JDialog implements ActionListener{
 		lblNewLabel_5.setBounds(89, 203, 56, 19);
 		contentPanel.add(lblNewLabel_5);
 		
-		textGenero = new JTextField();
-		textGenero.setBounds(155, 200, 96, 19);
-		contentPanel.add(textGenero);
-		textGenero.setColumns(10);
+	    cmbGenero = new JComboBox();
+		cmbGenero.setModel(new DefaultComboBoxModel(new String[] {"Accion", "Comedia", "Drama ", "Terror"}));
+		cmbGenero.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		cmbGenero.setBounds(154, 200, 96, 21);
+		contentPanel.add(cmbGenero);
 
 		JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
-
-		JButton okButton = new JButton("OK");
-		okButton.setActionCommand("OK");
-		buttonPane.add(okButton);
-		getRootPane().setDefaultButton(okButton);
-
-		JButton cancelButton = new JButton("Cancel");
-		cancelButton.setActionCommand("Cancel");
-		buttonPane.add(cancelButton);
 
 	}
 	public void actionPerformed(ActionEvent evento) {
@@ -166,7 +164,7 @@ public class VentanaTrabajador extends JDialog implements ActionListener{
 		peli.setPrecio(Float.parseFloat(textPrecio.getText()));
 		peli.setDuracion(Integer.parseInt(textDuracion.getText()));
 		peli.setCalificacion(Float.parseFloat(textCalificacion.getText()));
-		peli.setGenero(textGenero.getText());
+		peli.setIdG(cmbGenero.getSelectedItem().toString());
 		Principal.modificarPelicula(peli);
 		dispose();
 		
@@ -186,7 +184,9 @@ public class VentanaTrabajador extends JDialog implements ActionListener{
 		peli.setPrecio(Float.parseFloat(textPrecio.getText()));
 		peli.setDuracion(Integer.parseInt(textDuracion.getText()));
 		peli.setCalificacion(Float.parseFloat(textCalificacion.getText()));
-		peli.setGenero(textGenero.getText());
+		System.out.println("El getItemCount es: " + cmbGenero.getItemCount());
+		String seleccionado = cmbGenero.getSelectedItem().toString();
+		String IdG = seleccionado.split(",")[0].trim(); 
 		Principal.altaPelicula(peli);
 		dispose();	
 		

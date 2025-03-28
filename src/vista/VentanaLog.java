@@ -134,7 +134,7 @@ public class VentanaLog extends JFrame implements ActionListener{
 					VentanaAdmin ven = new VentanaAdmin();
 					ven.setVisible(true);
 				}else {
-					VentanaTrabajador ven = new VentanaTrabajador();
+					VentanaTrabajador ven = new VentanaTrabajador(usuario);
 					ven.setVisible(true);
 				}
 			} else if (usu instanceof Cliente)  {

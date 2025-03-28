@@ -6,10 +6,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 
 import excepciones.LoginException;
 import modelo.Cliente;
+import modelo.Genero;
 import modelo.Pelicula;
 import modelo.Trabajador;
 import modelo.Tipo;
@@ -29,9 +31,10 @@ public class DaoImplementacionMSql implements Dao {
 	final String ELIMINAR_TRABAJADOR = "DELETE from TRABJADOR where ID_T=?";
 	final String MODIFICAR_TRABAJADOR = "UPDATE TRABJADOR set ID_T=?, CONTRASENIA=?, NOMBRE=?, SUELDO=?";
 	final String AÑADIR_PELICULA = "INSERT INTO PELICULA (ID_P, NOMBRE, PRECIO, DURACION, CALIFICACION, ID_G, ID_T) VALUES (?,?,?,?,?,?,?)";
-	final String MODIFICAR_PELICULA = "UPDATE PELICULA (ID_P, NOMBRE, PRECIO, DURACION, CALIFICACION, ID_G, iD_T)";
+	final String MODIFICAR_PELICULA = "UPDATE PELICULA (ID_P, NOMBRE, PRECIO, DURACION, CALIFICACION, ID_G, ID_T)";
 	final String ELIMINAR_PELICULA = "DELETE from PELICULA where ID_P=?";
 	final String LOGIN_CLIENTE = " Select * from Cliente where DNI = ? AND CONTRASENIA = ?";
+	final String LEER_GENERO = "SELECT * from Genero";
 
 
 	private void openConnection() {
@@ -89,7 +92,6 @@ public class DaoImplementacionMSql implements Dao {
 				
 				usu = new Trabajador();
 				String tipo = rs.getString(5);
-				System.out.println("recibido de la query 4: " + tipo);
 				Tipo tipoEnum = Tipo.valueOf(tipo);
 				((Trabajador) usu).setTipo(tipoEnum);
 
@@ -191,7 +193,6 @@ public class DaoImplementacionMSql implements Dao {
 			stmt.setInt(4, peli.getDuracion());
 			stmt.setFloat(5, peli.getCalificacion());
 			stmt.setString(6,peli.getIdG());
-			stmt.setString(7,peli.getIdT());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -239,7 +240,7 @@ public class DaoImplementacionMSql implements Dao {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(ELIMINAR_PELICULA);
-			stmt.setString(1, peli.getIdT());
+			
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -289,7 +290,31 @@ public class DaoImplementacionMSql implements Dao {
 
 	}
 
-
+	@Override
+	public Map<String, Genero> listargenero() {
+		HashMap<String, Genero> map = new HashMap<String,Genero>();
+		ResultSet rs = null;
+		openConnection();
+		try {
+			stmt = con.prepareStatement(LEER_GENERO);
+			rs = stmt.executeQuery();
+			Genero genero = new Genero();
+			while (rs.next()) {
+				//map.keySet().add(rs.getString(1));
+				genero.setIdG(rs.getString(1));
+				genero.setCategoria(rs.getString(2));
+				map.put(rs.getString(1), genero);
+			}
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
+   }
 }
-
-

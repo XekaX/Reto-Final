@@ -4,6 +4,7 @@ import java.util.Map;
 
 import excepciones.LoginException;
 import modelo.Cliente;
+import modelo.Genero;
 import modelo.Pelicula;
 import modelo.Trabajador;
 import modelo.Usuario;
@@ -28,6 +29,8 @@ public interface Dao {
 	 public void eliminarPeliculas (Pelicula peli);
 	 
 	 public void altaClientes(Cliente clien);
+	 
+	 public Map<String, Genero> listargenero();
 	 
 	 public Map<String, Pelicula> listarPeliculas();
 	 
