@@ -74,7 +74,7 @@ public class DaoImplementacionMSql implements Dao {
 			stmt.setString(1, usuario.getIdentificacion());
 			stmt.setString(2, usuario.getContrasenia());
 			rs = stmt.executeQuery();
-			System.out.println("resultados query trabajador: " + stmt);
+
 
 			if (!rs.next()) {
 				stmt = con.prepareStatement(LOGIN_CLIENTE);
@@ -121,7 +121,6 @@ public class DaoImplementacionMSql implements Dao {
 			stmt.setString(3, trab.getNombre());
 			stmt.setFloat(4, trab.getSueldo());
 			stmt.setString(5, trab.getTipo().toString());
-			System.out.println("Query alta trabajador: " + stmt);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -273,8 +272,6 @@ public class DaoImplementacionMSql implements Dao {
 			stmt.setString(1, clien.getIdentificacion());
 			stmt.setString(2, clien.getNombre());
 			stmt.setString(3, clien.getContrasenia());
-			//System.out.println("QUERY: " + stmt);
-			System.out.println("pepe");
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("Error SQL Exception");
