@@ -192,6 +192,7 @@ public class DaoImplementacionMSql implements Dao {
 			stmt.setInt(4, peli.getDuracion());
 			stmt.setFloat(5, peli.getCalificacion());
 			stmt.setString(6,peli.getIdG());
+			stmt.setString(7,peli.getIdT());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

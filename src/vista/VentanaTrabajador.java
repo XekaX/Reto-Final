@@ -184,7 +184,7 @@ public class VentanaTrabajador extends JDialog implements ActionListener{
 		peli.setPrecio(Float.parseFloat(textPrecio.getText()));
 		peli.setDuracion(Integer.parseInt(textDuracion.getText()));
 		peli.setCalificacion(Float.parseFloat(textCalificacion.getText()));
-		System.out.println("El getItemCount es: " + cmbGenero.getItemCount());
+		peli.setIdT(usuario.getIdentificacion());
 		String seleccionado = cmbGenero.getSelectedItem().toString();
 		String IdG = seleccionado.split(",")[0].trim(); 
 		Principal.altaPelicula(peli);
