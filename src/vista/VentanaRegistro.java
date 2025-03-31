@@ -15,12 +15,13 @@ import modelo.Cliente;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.LocalDate;
 
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 
-public class VentanaRegistro extends JDialog {
+public class VentanaRegistro extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
@@ -89,6 +90,7 @@ public class VentanaRegistro extends JDialog {
 			btnRegistrar = new JButton("Registrar");
 			btnRegistrar.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			btnRegistrar.setBounds(152, 154, 114, 27);
+			btnRegistrar.addActionListener(this);
 			contentPanel.add(btnRegistrar);	
 	}
 	public void actionPerformed(ActionEvent evento) {
@@ -100,7 +102,7 @@ public class VentanaRegistro extends JDialog {
 
 	private void registrar() {
 		Cliente clien = new Cliente();
-		clien.setDni(textDni.getText());
+		clien.setIdentificacion(textDni.getText());
 		clien.setNombre(textNombre.getText());
 		clien.setContrasenia(new String (textContraseña.getPassword()));
 		Principal.altaCliente(clien);
