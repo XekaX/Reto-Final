@@ -15,6 +15,8 @@ class TestCliente {
 	void setUp() throws Exception {
 		cli=new Cliente();
 		cli.setNombre("Mikel");
+		
+		///ppppp
 	}
 	@Test
 	public void testGetNombre() {
