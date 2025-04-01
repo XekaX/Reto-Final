@@ -20,6 +20,7 @@ class TestPelicula {
 		peli.setDuracion(120);
 		peli.setCalificacion((float) 4.5);
 		peli.setIdG("G001");
+		peli.setIdT("T001");
 	}
 
 	@Test
@@ -85,6 +86,17 @@ class TestPelicula {
 	public void testSetIdG () {
 		peli.setIdG("G002");
 		assertEquals("G002", peli.getIdG());
+	} 
+	
+	@Test
+	public void testGetIdT() {
+		assertEquals("G001", peli.getIdG());
+	}
+	
+	@Test
+	public void testSetIdT () {
+		peli.setIdG("T002");
+		assertEquals("T002", peli.getIdG());
 	} 
 	
 	@Test
