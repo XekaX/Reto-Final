@@ -27,7 +27,7 @@ public class DaoImplementacionMSql implements Dao {
 	//Sentencias SQL
 	final String INSERTAR_CLIENTE = "INSERT INTO CLIENTE (DNI, NOMBRE, CONTRASENIA) VALUES (?,?,?)";
 	final String INSERTAR_TRABAJADOR ="INSERT INTO TRABAJADOR (ID_T, CONTRASENIA, NOMBRE, SUELDO, TIPO) VALUES (?,?,?,?,?)";
-	final String LOGIN_TRABAJADOR = "Select * from TRABAJADOR where NOMBRE = ? and CONTRASENIA = ?";
+	final String LOGIN_TRABAJADOR = "Select * from TRABAJADOR where ID_T = ? and CONTRASENIA = ?";
 	final String ELIMINAR_TRABAJADOR = "DELETE from TRABAJADOR where ID_T=?";
 	final String MODIFICAR_TRABAJADOR = "UPDATE TRABAJADOR set ID_T=?, CONTRASENIA=?, NOMBRE=?, SUELDO=?";
 	final String AÑADIR_PELICULA = "INSERT INTO PELICULA (ID_P, NOMBRE, PRECIO, DURACION, CALIFICACION, ID_G, ID_T) VALUES (?,?,?,?,?,?,?)";
@@ -65,11 +65,6 @@ public class DaoImplementacionMSql implements Dao {
 
 
 		try {
-			//					if (tipo == "Trabajador") {
-			//						stmt = con.prepareStatement(LOGIN_TRABAJADOR);
-			//					}else {
-			//						stmt = con.prepareStatement(LOGIN_CLIENTE);
-			//					}
 			stmt = con.prepareStatement(LOGIN_TRABAJADOR);
 			stmt.setString(1, usuario.getIdentificacion());
 			stmt.setString(2, usuario.getContrasenia());
@@ -290,14 +285,15 @@ public class DaoImplementacionMSql implements Dao {
 
 	@Override
 	public Map<String, Genero> listargenero() {
-		HashMap<String, Genero> map = new HashMap<String,Genero>();
+		Map<String, Genero> map = new HashMap<String,Genero>();
 		ResultSet rs = null;
 		openConnection();
 		try {
 			stmt = con.prepareStatement(LEER_GENERO);
 			rs = stmt.executeQuery();
-			Genero genero = new Genero();
+			
 			while (rs.next()) {
+				Genero genero = new Genero();
 				//map.keySet().add(rs.getString(1));
 				genero.setIdG(rs.getString(1));
 				genero.setCategoria(rs.getString(2));
@@ -312,7 +308,7 @@ public class DaoImplementacionMSql implements Dao {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		return null;
+		return map;
 	}
    }
 }

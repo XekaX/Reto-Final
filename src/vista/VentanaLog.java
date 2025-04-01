@@ -128,7 +128,7 @@ public class VentanaLog extends JFrame implements ActionListener{
 			Usuario usu = Principal.login(usuario);
 			
 			if (usu instanceof Trabajador) {
-				System.out.println("Usuario recibidi del tipo trabajador: " + ((Trabajador) usu).getTipo());
+				
 				if (((Trabajador) usu).getTipo().equals(Tipo.ADMIN)) {
 					
 					VentanaAdmin ven = new VentanaAdmin();

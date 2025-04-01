@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controlador.Principal;
+import modelo.Genero;
 import modelo.Pelicula;
 import modelo.Trabajador;
 import modelo.Usuario;
@@ -17,6 +18,8 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
@@ -36,6 +39,7 @@ public class VentanaTrabajador extends JDialog implements ActionListener{
 	private JButton btnModificar;
 	private JComboBox cmbGenero;
 	private Usuario usuario;
+	private Map<String, Genero> map;
 
 	/**
 	 * Launch the application.
@@ -56,6 +60,7 @@ public class VentanaTrabajador extends JDialog implements ActionListener{
 	 */
 	public VentanaTrabajador(Usuario user) {
 		this.usuario = user;
+		this.map = Principal.recibirMapaGenero();
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -137,7 +142,9 @@ public class VentanaTrabajador extends JDialog implements ActionListener{
 		contentPanel.add(lblNewLabel_5);
 		
 	    cmbGenero = new JComboBox();
-		cmbGenero.setModel(new DefaultComboBoxModel(new String[] {"Accion", "Comedia", "Drama ", "Terror"}));
+	    for (Genero genero : map.values()) {
+	        cmbGenero.addItem(genero.getCategoria());
+	    }
 		cmbGenero.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		cmbGenero.setBounds(154, 200, 96, 21);
 		contentPanel.add(cmbGenero);
@@ -146,6 +153,10 @@ public class VentanaTrabajador extends JDialog implements ActionListener{
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
+	}
+	public void llenarElmapa() {
+		
+		
 	}
 	public void actionPerformed(ActionEvent evento) {
 		if (evento.getSource().equals(btnAñadir)) {
@@ -186,7 +197,12 @@ public class VentanaTrabajador extends JDialog implements ActionListener{
 		peli.setCalificacion(Float.parseFloat(textCalificacion.getText()));
 		peli.setIdT(usuario.getIdentificacion());
 		String seleccionado = cmbGenero.getSelectedItem().toString();
-		String IdG = seleccionado.split(",")[0].trim(); 
+		for (Genero genero : map.values()) {
+			if (genero.getCategoria() == seleccionado) {
+				peli.setIdG(genero.getIdG());
+			}
+		}
+
 		Principal.altaPelicula(peli);
 		dispose();	
 		

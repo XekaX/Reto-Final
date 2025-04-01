@@ -1,7 +1,11 @@
 package controlador;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import excepciones.LoginException;
 import modelo.Cliente;
+import modelo.Genero;
 import modelo.Pelicula;
 import modelo.Trabajador;
 import modelo.Usuario;
@@ -52,7 +56,11 @@ public class Principal {
 	public static void modificarPelicula(Pelicula peli) {
 		dao.modificarPelicula(peli);
 	}
-
+	
+	public static Map<String, Genero> recibirMapaGenero() {
+		Map<String, Genero> genero = dao.listargenero();
+		return genero;
+	}
 }
 
 
