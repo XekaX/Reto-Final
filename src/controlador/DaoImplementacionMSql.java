@@ -25,15 +25,18 @@ public class DaoImplementacionMSql implements Dao {
 
 
 	//Sentencias SQL
+	//CLIENTE
 	final String INSERTAR_CLIENTE = "INSERT INTO CLIENTE (DNI, NOMBRE, CONTRASENIA) VALUES (?,?,?)";
+	final String LOGIN_CLIENTE = " Select * from Cliente where DNI = ? AND CONTRASENIA = ?";
+	//TRABAJADOR
 	final String INSERTAR_TRABAJADOR ="INSERT INTO TRABAJADOR (ID_T, CONTRASENIA, NOMBRE, SUELDO, TIPO) VALUES (?,?,?,?,?)";
 	final String LOGIN_TRABAJADOR = "Select * from TRABAJADOR where ID_T = ? and CONTRASENIA = ?";
 	final String ELIMINAR_TRABAJADOR = "DELETE from TRABAJADOR where ID_T=?";
-	final String MODIFICAR_TRABAJADOR = "UPDATE TRABAJADOR set ID_T=?, CONTRASENIA=?, NOMBRE=?, SUELDO=?";
+	final String MODIFICAR_TRABAJADOR = "UPDATE TRABAJADOR set NOMBRE=?, CONTRASENIA=?, SUELDO=? WHERE ID_T=?";
+	//PELICULA
 	final String AÑADIR_PELICULA = "INSERT INTO PELICULA (ID_P, NOMBRE, PRECIO, DURACION, CALIFICACION, ID_G, ID_T) VALUES (?,?,?,?,?,?,?)";
-	final String MODIFICAR_PELICULA = "UPDATE PELICULA (ID_P, NOMBRE, PRECIO, DURACION, CALIFICACION, ID_G, ID_T)";
+	final String MODIFICAR_PELICULA = "UPDATE PELICULA SET PRECIO=?, CALIFICACION=? WHERE ID_P=?";
 	final String ELIMINAR_PELICULA = "DELETE from PELICULA where ID_P=?";
-	final String LOGIN_CLIENTE = " Select * from Cliente where DNI = ? AND CONTRASENIA = ?";
 	final String LEER_GENERO = "SELECT * from Genero";
 
 
@@ -140,10 +143,10 @@ public class DaoImplementacionMSql implements Dao {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(MODIFICAR_TRABAJADOR);
-			stmt.setString(1, trab.getIdentificacion());
-			stmt.setString(2, trab.getNombre());
-			stmt.setString(3, trab.getContrasenia());
-			stmt.setFloat(4, trab.getSueldo());
+			stmt.setString(1, trab.getNombre());
+			stmt.setString(2, trab.getContrasenia());
+			stmt.setFloat(3, trab.getSueldo());
+			stmt.setString(4, trab.getIdentificacion());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -212,11 +215,9 @@ public class DaoImplementacionMSql implements Dao {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(MODIFICAR_PELICULA);
-			stmt.setString(1, peli.getIdP());
-			stmt.setString(2, peli.getNombre());
-			stmt.setFloat(3, peli.getPrecio());
-			stmt.setInt(4, peli.getDuracion());
-			stmt.setFloat(5, peli.getCalificacion());
+			stmt.setFloat(1, peli.getPrecio());
+			stmt.setFloat(2, peli.getCalificacion());
+			stmt.setString(3, peli.getIdP());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -235,7 +236,7 @@ public class DaoImplementacionMSql implements Dao {
 		openConnection();
 		try {
 			stmt = con.prepareStatement(ELIMINAR_PELICULA);
-			
+			stmt.setString(1, peli.getIdP());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -51,6 +51,13 @@ class TestCompra {
 		com.setContrasenia("JonAnder1");
 		assertEquals("JonAnder1", com.getContrasenia());
 	} 
+	
+	@Test
+	public void testToString () {
+		String comp;
+		comp=com.toString();
+		assertEquals("Compra [dni=22762260B, nombre=Ekain, contrasenia=ekain1]", com.toString());
+	}
 	@AfterEach
 	void tearDown() throws Exception {
 	}
