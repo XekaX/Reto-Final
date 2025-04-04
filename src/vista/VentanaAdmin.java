@@ -43,6 +43,7 @@ public class VentanaAdmin extends JDialog implements ActionListener {
 			dialog.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println();
 		}
 	}
 

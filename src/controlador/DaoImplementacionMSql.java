@@ -38,7 +38,7 @@ public class DaoImplementacionMSql implements Dao {
 	final String MODIFICAR_PELICULA = "UPDATE PELICULA SET PRECIO=?, CALIFICACION=? WHERE ID_P=?";
 	final String ELIMINAR_PELICULA = "DELETE from PELICULA where ID_P=?";
 	final String LEER_GENERO = "SELECT * from Genero";
-
+    final String LEER_PELICULAS = "SELECT * from Pelicula";
 
 	private void openConnection() {
 		try {
@@ -251,10 +251,46 @@ public class DaoImplementacionMSql implements Dao {
 
 	@Override
 	public Map<String, Pelicula> listarPeliculas() {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, Pelicula> map = new HashMap<String,Pelicula>();
+		ResultSet rs = null;
+		Pelicula peli;
+		openConnection();
+		try {
+			stmt = con.prepareStatement(LEER_PELICULAS);
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				peli = new Pelicula();
+				peli.setIdP(rs.getString("id_p"));
+				peli.setNombre(rs.getString("Nombre"));
+				peli.setPrecio(rs.getFloat("precio"));
+				peli.setDuracion(rs.getInt("Duracion"));
+				peli.setCalificacion(rs.getFloat("Calificacion"));
+				peli.setIdG(rs.getString("id_g"));
+				peli.setIdT(rs.getString("id_t"));
+				map.put(peli.getIdP(), peli);
+			}
+			
+//			for (Pelicula pel: map.values()) {
+//				System.out.println(pel);
+//			}
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				closeConnection();
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return map;
 	}
 
+		
 	@Override
 	public Map<String, Pelicula> listarPeliculasCompradas(Pelicula peli) {
 		// TODO Auto-generated method stub
@@ -281,7 +317,6 @@ public class DaoImplementacionMSql implements Dao {
 			}
 		}
 
-
 	}
 
 	@Override
@@ -306,10 +341,13 @@ public class DaoImplementacionMSql implements Dao {
 		} finally {
 			try {
 				closeConnection();
+				if (rs != null) {
+					rs.close();
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		}
 		return map;
 	}
-   }
 }

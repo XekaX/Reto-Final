@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -11,6 +12,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
+import controlador.Principal;
+import modelo.Pelicula;
+import java.awt.Font;
 
 public class VentanaPeliculas extends JDialog implements ActionListener {
 
@@ -37,9 +43,9 @@ public class VentanaPeliculas extends JDialog implements ActionListener {
 	 * Create the dialog.
 	 */
 	public VentanaPeliculas() {
-		setBounds(100, 100, 450, 300);
+		presentarTablaPelis();
+		setBounds(100, 100, 599, 437);
 		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setLayout(new FlowLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 
@@ -64,16 +70,43 @@ public class VentanaPeliculas extends JDialog implements ActionListener {
 
 	}
 
-	private void presentarTablaPelis(String pelis) {
-		tablaPelis = this.cargarTablaPelis(pelis);
+	private void presentarTablaPelis() {
+		contentPanel.setLayout(null);
+		jscroll = new JScrollPane();
+		jscroll.setBounds(39, 77, 412, 90);
+		tablaPelis = this.cargarTablaPelis();
 		jscroll.setViewportView(tablaPelis);
+		contentPanel.add(jscroll);
+		
 	}
 
-	private JTable cargarTablaPelis(String pelis2) {
-	String[] columnasNombre = { "Titulo", "Duracion", "Calificacion", "Precio"};
-	String[][]pelis;
-	/*DefaultTableModel model = new DefaultTableModel(columnasNombre, null);
-	Map<tring, Pelicula>*/
-		return null;
+	private JTable cargarTablaPelis() {
+		String[] columnasNombre = { "Titulo", "Duracion", "Calificacion", "Precio"};
+		Map<String, Pelicula> pelisMap = Principal.listarPeliculas();
+		
+		 //modelo de la tabla con los datos
+	    DefaultTableModel model = new DefaultTableModel(null, columnasNombre);
+		
+		int i = 0;
+	    for (Map.Entry<String, Pelicula> entry : pelisMap.entrySet()) {
+	    	 Pelicula peli = entry.getValue();
+	        /*Pelicula peli = new Pelicula();
+	        pelis[i][0] = peli.getNombre();// Titulo
+	        pelis[i][1] = String.valueOf(peli.getDuracion());// Duración
+	        pelis[i][2] = String.valueOf(peli.getCalificacion());// Calificación
+	        pelis[i][3] = String.valueOf(peli.getPrecio());// Precio
+	        i++;*/
+	    	 String[] fila = new String[4];
+	         fila[0] = peli.getNombre();                       // Titulo
+	         fila[1] = String.valueOf(peli.getDuracion());     // Duración
+	         fila[2] = String.valueOf(peli.getCalificacion()); // Calificación
+	         fila[3] = String.valueOf(peli.getPrecio());       // Precio
+
+	         model.addRow(fila);	    }
+	    System.out.println("estas son las pelis desde la ventana peliculas: " + pelis);
+	    //creacion de la Jtable con el modelo
+	    JTable tablaPelis = new JTable(model);
+	
+		return tablaPelis;
 	}
 }

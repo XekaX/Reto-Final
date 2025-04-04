@@ -17,6 +17,7 @@ public class Principal {
 	public static void main(String[] args) {
 		VentanaLog ventana = new VentanaLog();
 		ventana.setVisible(true);
+		
 	}
 
 	public static Usuario login(Usuario trabajador) throws LoginException {
@@ -56,10 +57,11 @@ public class Principal {
 	public static void modificarPelicula(Pelicula peli) {
 		dao.modificarPelicula(peli);
 	}
-	
 	public static Map<String, Genero> recibirMapaGenero() {
-		Map<String, Genero> genero = dao.listargenero();
-		return genero;
+		return dao.listargenero();
+	}
+	public static Map<String, Pelicula> listarPeliculas() {;
+		return dao.listarPeliculas();
 	}
 }
 
