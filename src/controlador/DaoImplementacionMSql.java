@@ -29,7 +29,7 @@ public class DaoImplementacionMSql implements Dao {
 	//CLIENTE
 	final String INSERTAR_CLIENTE = "INSERT INTO CLIENTE (DNI, NOMBRE, CONTRASENIA) VALUES (?,?,?)";
 	final String LOGIN_CLIENTE = " Select * from Cliente where DNI = ? AND CONTRASENIA = ?";
-	final String LEER_PELICULAS_COMPRADAS = "Select * from Compra where DNI=?";
+	final String LEER_PELICULAS_COMPRADAS = "SELECT P.* FROM PELICULA P, COMPRA C WHERE P.ID_P = C.ID_P AND C.DNI = ?";
 	final String COMPRAR_PELICULA = "INSERT INTO COMPRA (DNI, ID_P, FECHA_COMPRA) VALUES (?,?,?)";
 	//TRABAJADOR
 	final String INSERTAR_TRABAJADOR ="INSERT INTO TRABAJADOR (ID_T, CONTRASENIA, NOMBRE, SUELDO, TIPO) VALUES (?,?,?,?,?)";
@@ -302,7 +302,7 @@ public class DaoImplementacionMSql implements Dao {
 		
 	@Override
 	public Map<String, Pelicula> listarPeliculasCompradas(Usuario clien) {
-		Map<String, Pelicula> map = new HashMap<String,Pelicula>();
+		Map<String, Pelicula> pelisCompradasMap = new HashMap<String,Pelicula>();
 		ResultSet rs = null;
 		Pelicula peli;
 		openConnection();
@@ -320,7 +320,7 @@ public class DaoImplementacionMSql implements Dao {
 				peli.setCalificacion(rs.getFloat("Calificacion"));
 				peli.setIdG(rs.getString("id_g"));
 				peli.setIdT(rs.getString("id_t"));
-				map.put(peli.getIdP(), peli);
+				pelisCompradasMap.put(peli.getIdP(), peli);
 			}
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -334,7 +334,7 @@ public class DaoImplementacionMSql implements Dao {
 				e.printStackTrace();
 			}
 		}
-		return map;
+		return pelisCompradasMap;
 	}
 
 	@Override

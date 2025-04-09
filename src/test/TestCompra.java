@@ -2,22 +2,24 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import modelo.Cliente;
 import modelo.Compra;
 
 class TestCompra {
 	Compra com;
+
 	@BeforeEach
 	void setUp() throws Exception {
-		com=new Compra();	
+		com = new Compra();	
 		com.setDni("22762260B");
-		com.setNombre("Ekain");
-		com.setContrasenia("ekain1");
-		}
+		com.setIdP("P001");
+		com.setFechaCompra(LocalDate.parse("2025-04-09"));
+	}
 
 	@Test
 	public void testGetDni() {
@@ -25,39 +27,40 @@ class TestCompra {
 	}
 	
 	@Test
-	public void testSetDni () {
+	public void testSetDni() {
 		com.setDni("22762261N");
 		assertEquals("22762261N", com.getDni());
 	} 
 	
 	@Test
-	public void testGetNombre() {
-		assertEquals("Ekain", com.getIdP());
+	public void testGetIdP() {
+		assertEquals("P001", com.getIdP());
 	}
 	
 	@Test
-	public void testSetNombre () {
-		com.setNombre("Jon Ander");
-		assertEquals("Jon Ander", com.getIdP());
+	public void testSetIdP() {
+		com.setIdP("P002");
+		assertEquals("P002", com.getIdP());
 	} 
 	
 	@Test
-	public void testGetContrasenia() {
-		assertEquals("ekain1", com.getContrasenia());
+	public void testGetFechaCompra() {
+		assertEquals(LocalDate.parse("2025-04-09"), com.getFechaCompra());
 	}
 	
 	@Test
-	public void testSetContrasenia () {
-		com.setContrasenia("JonAnder1");
-		assertEquals("JonAnder1", com.getContrasenia());
+	public void testSetFechaCompra() {
+		com.setFechaCompra(LocalDate.parse("2024-04-10"));
+		assertEquals(LocalDate.parse("2024-04-10"), com.getFechaCompra());
 	} 
 	
 	@Test
-	public void testToString () {
-		String comp;
-		comp=com.toString();
-		assertEquals("Compra [dni=22762260B, nombre=Ekain, contrasenia=ekain1]", com.toString());
+	public void testToString() {
+		String esperado = "Compra [dni=22762260B, nombre=P001, fechaCompra=2025-04-09]";
+		assertEquals(esperado, com.toString());
 	}
+
+
 	@AfterEach
 	void tearDown() throws Exception {
 	}

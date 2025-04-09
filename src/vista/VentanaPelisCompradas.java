@@ -33,30 +33,17 @@ public class VentanaPelisCompradas extends JDialog {
 	 * /** Create the dialog.
 	 */
 	public VentanaPelisCompradas(Usuario clien) {
+		this.clien = clien;
+		presentarTablaPelis();
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 
-		// Crear el modelo de la tabla y asignarlo a la tabla
-		String[] columnasNombre = { "Código", "Nombre", "Duración", "Calificación", "Precio" };
-		model = new DefaultTableModel(null, columnasNombre);
-		tablaPelisCompradas = new JTable(model); // Asociamos el modelo a la tabla
-		contentPanel.add(tablaPelisCompradas);
-
 		JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
-
-		JButton okButton = new JButton("OK");
-		okButton.setActionCommand("OK");
-		buttonPane.add(okButton);
-		getRootPane().setDefaultButton(okButton);
-
-		JButton cancelButton = new JButton("Cancel");
-		cancelButton.setActionCommand("Cancel");
-		buttonPane.add(cancelButton);
 	}
 
 	private void presentarTablaPelis() {
@@ -75,8 +62,7 @@ public class VentanaPelisCompradas extends JDialog {
 	private JTable cargarTablaPelis() {
 		String[] columnasNombre = { "Titulo", "Duracion", "Calificacion", "Precio","ID"};
 		Map<String, Pelicula> pelisCompradasMap = Principal.listarPeliculasCompradas(clien);
-
-		// Crear el modelo de la tabla
+		
 		DefaultTableModel model = new DefaultTableModel(null, columnasNombre);
 
 		// Llenar el modelo con los datos de las películas

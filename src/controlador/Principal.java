@@ -18,8 +18,7 @@ public class Principal {
 	public static void main(String[] args) {
 		VentanaLog ventana = new VentanaLog();
 		ventana.setVisible(true);
-		
-	}
+		}
 
 	public static Usuario login(Usuario trabajador) throws LoginException {
 		Usuario usu = dao.login(trabajador);
