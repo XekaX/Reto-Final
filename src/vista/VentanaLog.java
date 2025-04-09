@@ -121,14 +121,12 @@ public class VentanaLog extends JFrame implements ActionListener{
 	
 	private void comprobar() {
 		Usuario usuario = new Usuario();
-		usuario.setIdentificacion(textUsuario.getText());
+		usuario.setIdentificacion(textUsuario.getText());	
 		usuario.setContrasenia(new String (textContraseña.getPassword()));
 		
 		try {
-			Usuario usu = Principal.login(usuario);
-			
+			Usuario usu = Principal.login(usuario);	
 			if (usu instanceof Trabajador) {
-				
 				if (((Trabajador) usu).getTipo().equals(Tipo.ADMIN)) {
 					
 					VentanaAdmin ven = new VentanaAdmin();
@@ -138,7 +136,7 @@ public class VentanaLog extends JFrame implements ActionListener{
 					ven.setVisible(true);
 				}
 			} else if (usu instanceof Cliente)  {
-				 VentanaCliente ven = new VentanaCliente();
+				 VentanaCliente ven = new VentanaCliente(usu);
 				 ven.setVisible(true);
 			}
 			

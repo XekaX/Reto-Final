@@ -1,9 +1,11 @@
 package modelo;
 
+import java.time.LocalDate;
+
 public class Compra {
 	private String dni;
-	private String nombre;
-	private String contrasenia;
+	private String idP;
+	private LocalDate fechaCompra;
 	
 	public String getDni() {
 		return dni;
@@ -11,25 +13,22 @@ public class Compra {
 	public void setDni(String dni) {
 		this.dni = dni;
 	}
-	public String getNombre() {
-		return nombre;
+	public String getIdP() {
+		return idP;
 	}
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setIdP(String idP) {
+		this.idP = idP;
 	}
-	public String getContrasenia() {
-		return contrasenia;
+	public LocalDate getFechaCompra() {
+		return fechaCompra;
 	}
-	public void setContrasenia(String contrasenia) {
-		this.contrasenia = contrasenia;
+	public void setFechaCompra(LocalDate fechaCompra) {
+		this.fechaCompra = fechaCompra;
 	}
 	@Override
 	public String toString() {
-		return "Compra [dni=" + dni + ", nombre=" + nombre + ", contrasenia=" + contrasenia + "]";
+		return "Compra [dni=" + dni + ", nombre=" + idP + ", fechaCompra=" + fechaCompra + "]";
 	}
-	
-	
-
 }
 	
 	

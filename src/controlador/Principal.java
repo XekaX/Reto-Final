@@ -5,6 +5,7 @@ import java.util.Map;
 
 import excepciones.LoginException;
 import modelo.Cliente;
+import modelo.Compra;
 import modelo.Genero;
 import modelo.Pelicula;
 import modelo.Trabajador;
@@ -60,8 +61,14 @@ public class Principal {
 	public static Map<String, Genero> recibirMapaGenero() {
 		return dao.listargenero();
 	}
-	public static Map<String, Pelicula> listarPeliculas() {;
-		return dao.listarPeliculas();
+	public static Map<String, Pelicula> listarPeliculas(Usuario clien) {
+		return dao.listarPeliculas(clien);
+	}
+	public static Map<String, Pelicula> listarPeliculasCompradas(Usuario clien){
+		return dao.listarPeliculasCompradas(clien);
+	}
+	public static void comprar(Compra comp) {
+		dao.comprar(comp);
 	}
 }
 

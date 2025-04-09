@@ -32,13 +32,13 @@ class TestCompra {
 	
 	@Test
 	public void testGetNombre() {
-		assertEquals("Ekain", com.getNombre());
+		assertEquals("Ekain", com.getIdP());
 	}
 	
 	@Test
 	public void testSetNombre () {
 		com.setNombre("Jon Ander");
-		assertEquals("Jon Ander", com.getNombre());
+		assertEquals("Jon Ander", com.getIdP());
 	} 
 	
 	@Test

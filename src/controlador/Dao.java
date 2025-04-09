@@ -4,6 +4,7 @@ import java.util.Map;
 
 import excepciones.LoginException;
 import modelo.Cliente;
+import modelo.Compra;
 import modelo.Genero;
 import modelo.Pelicula;
 import modelo.Trabajador;
@@ -32,11 +33,12 @@ public interface Dao {
 	 
 	 public Map<String, Genero> listargenero();
 	 
-	 public Map<String, Pelicula> listarPeliculas();
-	 
-	 public Map<String, Pelicula> listarPeliculasCompradas(Pelicula peli);
+	public void comprar(Compra comp);
 
-	Pelicula buscarPelicula(String idP);
+	public Map<String, Pelicula> listarPeliculas(Usuario clien);
+
+	public Map<String, Pelicula> listarPeliculasCompradas(Usuario usu);
+
 	
 
 }

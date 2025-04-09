@@ -11,6 +11,7 @@ import java.util.Map;
 
 import excepciones.LoginException;
 import modelo.Cliente;
+import modelo.Compra;
 import modelo.Genero;
 import modelo.Pelicula;
 import modelo.Trabajador;
@@ -28,6 +29,8 @@ public class DaoImplementacionMSql implements Dao {
 	//CLIENTE
 	final String INSERTAR_CLIENTE = "INSERT INTO CLIENTE (DNI, NOMBRE, CONTRASENIA) VALUES (?,?,?)";
 	final String LOGIN_CLIENTE = " Select * from Cliente where DNI = ? AND CONTRASENIA = ?";
+	final String LEER_PELICULAS_COMPRADAS = "Select * from Compra where DNI=?";
+	final String COMPRAR_PELICULA = "INSERT INTO COMPRA (DNI, ID_P, FECHA_COMPRA) VALUES (?,?,?)";
 	//TRABAJADOR
 	final String INSERTAR_TRABAJADOR ="INSERT INTO TRABAJADOR (ID_T, CONTRASENIA, NOMBRE, SUELDO, TIPO) VALUES (?,?,?,?,?)";
 	final String LOGIN_TRABAJADOR = "Select * from TRABAJADOR where ID_T = ? and CONTRASENIA = ?";
@@ -38,7 +41,7 @@ public class DaoImplementacionMSql implements Dao {
 	final String MODIFICAR_PELICULA = "UPDATE PELICULA SET PRECIO=?, CALIFICACION=? WHERE ID_P=?";
 	final String ELIMINAR_PELICULA = "DELETE from PELICULA where ID_P=?";
 	final String LEER_GENERO = "SELECT * from Genero";
-    final String LEER_PELICULAS = "SELECT * from Pelicula";
+    final String LEER_PELICULAS = "SELECT * FROM PELICULA WHERE ID_P NOT IN (SELECT ID_P FROM COMPRA WHERE DNI=?)";
 
 	private void openConnection() {
 		try {
@@ -84,6 +87,7 @@ public class DaoImplementacionMSql implements Dao {
 					throw new LoginException("Usuario o Password incorrecta");
 				}else {
 					usu = new Cliente();
+					usu.setIdentificacion(rs.getString(1));
 
 				}
 			}else {
@@ -92,6 +96,8 @@ public class DaoImplementacionMSql implements Dao {
 				String tipo = rs.getString(5);
 				Tipo tipoEnum = Tipo.valueOf(tipo);
 				((Trabajador) usu).setTipo(tipoEnum);
+				usu.setIdentificacion(rs.getString(1));
+				
 
 			}
 		} catch (SQLException e) {
@@ -132,10 +138,23 @@ public class DaoImplementacionMSql implements Dao {
 
 	}
 
-	@Override
-	public Trabajador buscarTrabajador(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public void comprar(Compra comp) {
+		openConnection();
+		try {
+			stmt = con.prepareStatement(COMPRAR_PELICULA);
+			stmt.setString(1,comp.getDni());
+			stmt.setString(2, comp.getIdP());
+			stmt.setDate(3, Date.valueOf(comp.getFechaCompra()));
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
@@ -203,13 +222,7 @@ public class DaoImplementacionMSql implements Dao {
 		}
 
 	}
-
-	@Override
-	public Pelicula buscarPelicula(String idP) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	@Override
 	public void modificarPelicula(Pelicula peli) {
 		openConnection();
@@ -250,31 +263,27 @@ public class DaoImplementacionMSql implements Dao {
 	}
 
 	@Override
-	public Map<String, Pelicula> listarPeliculas() {
+	public Map<String, Pelicula> listarPeliculas(Usuario clien) {
 		Map<String, Pelicula> map = new HashMap<String,Pelicula>();
 		ResultSet rs = null;
 		Pelicula peli;
 		openConnection();
 		try {
 			stmt = con.prepareStatement(LEER_PELICULAS);
+			stmt.setString(1, clien.getIdentificacion());
 			rs = stmt.executeQuery();
-			
 			while (rs.next()) {
 				peli = new Pelicula();
 				peli.setIdP(rs.getString("id_p"));
 				peli.setNombre(rs.getString("Nombre"));
-				peli.setPrecio(rs.getFloat("precio"));
+				peli.setPrecio(rs.getFloat("Precio"));
 				peli.setDuracion(rs.getInt("Duracion"));
 				peli.setCalificacion(rs.getFloat("Calificacion"));
 				peli.setIdG(rs.getString("id_g"));
 				peli.setIdT(rs.getString("id_t"));
 				map.put(peli.getIdP(), peli);
 			}
-			
-//			for (Pelicula pel: map.values()) {
-//				System.out.println(pel);
-//			}
-			
+	
 		}catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -292,9 +301,40 @@ public class DaoImplementacionMSql implements Dao {
 
 		
 	@Override
-	public Map<String, Pelicula> listarPeliculasCompradas(Pelicula peli) {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<String, Pelicula> listarPeliculasCompradas(Usuario clien) {
+		Map<String, Pelicula> map = new HashMap<String,Pelicula>();
+		ResultSet rs = null;
+		Pelicula peli;
+		openConnection();
+		try {
+			stmt = con.prepareStatement(LEER_PELICULAS_COMPRADAS);
+			stmt.setString(1, clien.getIdentificacion());
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				peli = new Pelicula();
+				peli.setIdP(rs.getString("id_p"));
+				peli.setNombre(rs.getString("Nombre"));
+				peli.setPrecio(rs.getFloat("Precio"));
+				peli.setDuracion(rs.getInt("Duracion"));
+				peli.setCalificacion(rs.getFloat("Calificacion"));
+				peli.setIdG(rs.getString("id_g"));
+				peli.setIdT(rs.getString("id_t"));
+				map.put(peli.getIdP(), peli);
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				closeConnection();
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return map;
 	}
 
 	@Override
@@ -350,4 +390,12 @@ public class DaoImplementacionMSql implements Dao {
 		}
 		return map;
 	}
+
+	@Override
+	public Trabajador buscarTrabajador(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 }
