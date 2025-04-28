@@ -30,7 +30,7 @@ public class VentanaPeliculas extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private JTable tablaPelis; // Usamos tablaPelis en lugar de table
+	private JTable tablaPelis;
 	private JScrollPane jscroll;
 	private String pelis;
 	private float precio;
@@ -38,6 +38,7 @@ public class VentanaPeliculas extends JDialog implements ActionListener {
 	private int duracion;
 	private JButton btnComprar;
 	private Usuario clien;
+    private boolean mensajeMostrado = false;  // Bandera para controlar la visualización del mensaje
 
 	public VentanaPeliculas(Usuario clien) {
 		
@@ -75,12 +76,9 @@ public class VentanaPeliculas extends JDialog implements ActionListener {
 			String precio = tablaPelis.getValueAt(filaSeleccionada, 3).toString();
 			JOptionPane.showMessageDialog(this, "Has comprado la película: " + titulo + " por $" + precio);
 			presentarTablaPelis();
-			// Aquí podés agregar lógica real de compra: guardar compra, actualizar stock,
-			// etc.
 		} else {
 			JOptionPane.showMessageDialog(this, "Selecciona una película antes de comprar.");
 		}
-
 	}
 
 	private void presentarTablaPelis() {
@@ -94,9 +92,12 @@ public class VentanaPeliculas extends JDialog implements ActionListener {
 		tablaPelis.getColumnModel().getColumn(4).setMaxWidth(0);
 		tablaPelis.getColumnModel().getColumn(4).setWidth(0);
 		
-		String mejorPelicula = Principal.obtenerMejorPelicula();
-	    JOptionPane.showMessageDialog(this, "★ La película mejor valorada es: " + mejorPelicula);
-
+		// Solo mostrar el mensaje de la película mejor valorada si no se ha mostrado antes
+		if (!mensajeMostrado) {
+			String mejorPelicula = Principal.obtenerMejorPelicula();
+			JOptionPane.showMessageDialog(this, "★ La película mejor valorada es: " + mejorPelicula);
+			mensajeMostrado = true;  // Marcar que el mensaje ha sido mostrado
+		}
 	}
 
 	private JTable cargarTablaPelis() {
@@ -118,7 +119,6 @@ public class VentanaPeliculas extends JDialog implements ActionListener {
 			model.addRow(fila);
 		}
 		
-		
 		// Crear la tabla con el modelo
 		return new JTable(model);
 	}
@@ -127,6 +127,6 @@ public class VentanaPeliculas extends JDialog implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnComprar)) {
 			comprar();
+		}
 	}
-  }
 }

@@ -32,32 +32,39 @@ public class Principal {
 		dao.altaClientes(clien);
 	}
 
-	public static void altaTrabajador(Trabajador trab) {
-		dao.altaTrabajador(trab);
+	public static boolean altaTrabajador(Trabajador trab) {
+		return dao.altaTrabajador(trab);
 
 	}
 
-	public static void bajaPropietario(Trabajador trab) {
-		dao.eliminarTrabajador(trab);
-
+	public static boolean bajaPropietario(Trabajador trab) {
+	    return dao.eliminarTrabajador(trab);
 	}
 
-	public static void modificarTrabajador(Trabajador trab) {
-		dao.modificarTrabajador(trab);
-
+	public static boolean modificarTrabajador(Trabajador trab) {
+	    return dao.modificarTrabajador(trab);
 	}
 
-	public static void altaPelicula(Pelicula peli) {
-		dao.añadirPelicula(peli);
+	public static boolean existeTrabajador(String id) {
+	    return dao.existeTrabajador(id);
 	}
 
-	public static void eliminarPelicula(Pelicula peli) {
-		dao.eliminarPeliculas(peli);
+	public static boolean altaPelicula(Pelicula peli) {
+		return dao.añadirPelicula(peli);
 	}
 
-	public static void modificarPelicula(Pelicula peli) {
-		dao.modificarPelicula(peli);
+	public static boolean eliminarPelicula(Pelicula peli) {
+		return dao.eliminarPeliculas(peli);
 	}
+
+	public static boolean modificarPelicula(Pelicula peli) {
+		return dao.modificarPelicula(peli);
+	}
+	
+	public static boolean existePelicula(String id) {
+	    return dao.existeTrabajador(id);
+	}
+	
 	public static Map<String, Genero> recibirMapaGenero() {
 		return dao.listargenero();
 	}
@@ -75,5 +82,6 @@ public class Principal {
 		return dao.obtenerMejorPelicula();
 	}
 }
+
 
 

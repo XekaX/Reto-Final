@@ -152,49 +152,59 @@ public class VentanaAdmin extends JDialog implements ActionListener {
 	}
 
 	private void modificar() {
-		Trabajador trab = new Trabajador();
-		trab.setIdentificacion(textID.getText());
-		trab.setNombre(textNombre.getText());
-		trab.setContrasenia(textContraseña.getText());
-		trab.setSueldo(Float.parseFloat(textSueldo.getText()));
-		Principal.modificarTrabajador(trab);
-		dispose();
+	    String id = textID.getText();
+	    if (!Principal.existeTrabajador(id)) {
+	        javax.swing.JOptionPane.showMessageDialog(this, "Error: No existe un trabajador con ese ID para modificar.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+	        return;  // Salimos directamente
+	    }
 
+	    // Si existe, entonces sí pedimos el resto de datos y modificamos
+	    Trabajador trab = new Trabajador();
+	    trab.setIdentificacion(id);
+	    trab.setNombre(textNombre.getText());
+	    trab.setContrasenia(textContraseña.getText());
+	    trab.setSueldo(Float.parseFloat(textSueldo.getText()));
+
+	    boolean exito = Principal.modificarTrabajador(trab);
+	    if (exito) {
+	        dispose();
+	    } else {
+	        javax.swing.JOptionPane.showMessageDialog(this, "Error inesperado al modificar el trabajador.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+	    }
 	}
+
+
 
 	private void baja() {
-		Trabajador trab = new Trabajador();
-		trab.setIdentificacion(textID.getText());
-		Principal.bajaPropietario(trab);
-		dispose();
-
+	    Trabajador trab = new Trabajador();
+	    trab.setIdentificacion(textID.getText());
+	    
+	    boolean exito = Principal.bajaPropietario(trab);
+	    if (exito) {
+	        dispose();
+	    } else {
+	        javax.swing.JOptionPane.showMessageDialog(this, "Error: No existe un trabajador con ese ID.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+	    }
 	}
+
 
 	private void alta() {
-		Trabajador trab = new Trabajador();
-		trab.setIdentificacion(textID.getText());
-		trab.setNombre(textNombre.getText());
-		trab.setContrasenia(textContraseña.getText());
-		trab.setSueldo(Float.parseFloat(textSueldo.getText()));
-		trab.setTipo(Tipo.valueOf("TRABAJADOR"));
-		Principal.altaTrabajador(trab);
-		dispose();
-
+	    Trabajador trab = new Trabajador();
+	    trab.setIdentificacion(textID.getText());
+	    trab.setNombre(textNombre.getText());
+	    trab.setContrasenia(textContraseña.getText());
+	    trab.setSueldo(Float.parseFloat(textSueldo.getText()));
+	    trab.setTipo(Tipo.valueOf("TRABAJADOR"));
+	    
+	    boolean exito = Principal.altaTrabajador(trab);
+	    
+	    if (exito) {
+	        javax.swing.JOptionPane.showMessageDialog(this, "Trabajador " + trab.getNombre() + " añadido correctamente.");
+	        dispose();  // Cerrar ventana solo si ha ido bien
+	    } else {
+	        javax.swing.JOptionPane.showMessageDialog(this, "Error al añadir el trabajador.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+	    }
 	}
 
-	// Clase personalizada para dibujar la imagen de fondo
-	/*
-	 * static class BackgroundPanel extends JPanel { private Image backgroundImage;
-	 * 
-	 * public BackgroundPanel(String imagePath) { try { URL url =
-	 * getClass().getResource(imagePath); if (url == null) {
-	 * System.out.println("El archivo no se encuentra."); } else { backgroundImage =
-	 * new ImageIcon(url).getImage(); } } catch (Exception e) { e.printStackTrace();
-	 * System.out.println("Error al cargar la imagen: " + e.getMessage()); } }
-	 * 
-	 * @Override protected void paintComponent(Graphics g) {
-	 * super.paintComponent(g); if (backgroundImage != null) { // Dibujar la imagen
-	 * escalada al tamaño del panel g.drawImage(backgroundImage, 0, 0,
-	 * this.getWidth(), this.getHeight(), this); } } }
-	 */
+
 }

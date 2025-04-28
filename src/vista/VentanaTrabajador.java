@@ -192,42 +192,74 @@ public class VentanaTrabajador extends JDialog implements ActionListener {
 	}
 
 	private void modificar() {
-		Pelicula peli = new Pelicula();
-		peli.setIdP(textID.getText());
-		peli.setNombre(textNombre.getText());
-		peli.setPrecio(Float.parseFloat(textPrecio.getText()));
-		peli.setDuracion(Integer.parseInt(textDuracion.getText()));
-		peli.setCalificacion(Float.parseFloat(textCalificacion.getText()));
-		peli.setIdG(cmbGenero.getSelectedItem().toString());
-		Principal.modificarPelicula(peli);
-		dispose();
+	    String id = textID.getText();
+	    if (!Principal.existePelicula(id)) {
+	        javax.swing.JOptionPane.showMessageDialog(this, "Error: No existe una película con ese ID para modificar.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+	        return; // Salimos
+	    }
 
+	    // Si existe, entonces sí modificamos
+	    Pelicula peli = new Pelicula();
+	    peli.setIdP(id);
+	    peli.setNombre(textNombre.getText());
+	    peli.setPrecio(Float.parseFloat(textPrecio.getText()));
+	    peli.setDuracion(Integer.parseInt(textDuracion.getText()));
+	    peli.setCalificacion(Float.parseFloat(textCalificacion.getText()));
+	    peli.setIdG(cmbGenero.getSelectedItem().toString());
+
+	    boolean exito = Principal.modificarPelicula(peli);
+	    if (exito) {
+	        javax.swing.JOptionPane.showMessageDialog(this, "Película modificada correctamente: " + peli.getNombre(), "Modificación exitosa", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+	        dispose();
+	    } else {
+	        javax.swing.JOptionPane.showMessageDialog(this, "Error inesperado al modificar la película.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+	    }
 	}
+
 
 	private void baja() {
-		Pelicula peli = new Pelicula();
-		peli.setIdP(textID.getText());
-		Principal.eliminarPelicula(peli);
-		dispose();
+	    String id = textID.getText();
+	    if (!Principal.existePelicula(id)) {
+	        javax.swing.JOptionPane.showMessageDialog(this, "Error: No existe una película con ese ID para eliminar.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+	        return; // Salimos
+	    }
+
+	    Pelicula peli = new Pelicula();
+	    peli.setIdP(id);
+	    boolean exito = Principal.eliminarPelicula(peli);
+
+	    if (exito) {
+	        javax.swing.JOptionPane.showMessageDialog(this, "Película eliminada correctamente.", "Eliminación exitosa", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+	        dispose();
+	    } else {
+	        javax.swing.JOptionPane.showMessageDialog(this, "Error inesperado al eliminar la película.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+	    }
 	}
+
 
 	private void alta() {
-		Pelicula peli = new Pelicula();
-		peli.setIdP(textID.getText());
-		peli.setNombre(textNombre.getText());
-		peli.setPrecio(Float.parseFloat(textPrecio.getText()));
-		peli.setDuracion(Integer.parseInt(textDuracion.getText()));
-		peli.setCalificacion(Float.parseFloat(textCalificacion.getText()));
-		peli.setIdT(usuario.getIdentificacion());
-		String seleccionado = cmbGenero.getSelectedItem().toString();
-		for (Genero genero : map.values()) {
-			if (genero.getCategoria() == seleccionado) {
-				peli.setIdG(genero.getIdG());
-			}
-		}
+	    Pelicula peli = new Pelicula();
+	    peli.setIdP(textID.getText());
+	    peli.setNombre(textNombre.getText());
+	    peli.setPrecio(Float.parseFloat(textPrecio.getText()));
+	    peli.setDuracion(Integer.parseInt(textDuracion.getText()));
+	    peli.setCalificacion(Float.parseFloat(textCalificacion.getText()));
+	    peli.setIdT(usuario.getIdentificacion());
+	    String seleccionado = cmbGenero.getSelectedItem().toString();
+	    for (Genero genero : map.values()) {
+	        if (genero.getCategoria().equals(seleccionado)) {
+	            peli.setIdG(genero.getIdG());
+	        }
+	    }
 
-		Principal.altaPelicula(peli);
-		dispose();
+	    boolean exito = Principal.altaPelicula(peli);
 
+	    if (exito) {
+	        javax.swing.JOptionPane.showMessageDialog(this, "Película añadida correctamente: " + peli.getNombre(), "Alta exitosa", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+	        dispose();
+	    } else {
+	        javax.swing.JOptionPane.showMessageDialog(this, "Error inesperado al añadir la película.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+	    }
 	}
+
 }

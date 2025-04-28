@@ -39,10 +39,12 @@ public class DaoImplementacionMSql implements Dao {
 	final String LOGIN_TRABAJADOR = "Select * from TRABAJADOR where ID_T = ? and CONTRASENIA = ?";
 	final String ELIMINAR_TRABAJADOR = "DELETE from TRABAJADOR where ID_T=?";
 	final String MODIFICAR_TRABAJADOR = "UPDATE TRABAJADOR set NOMBRE=?, CONTRASENIA=?, SUELDO=? WHERE ID_T=?";
+	final String EXISTE_TRABAJADOR = "SELECT 1 FROM TRABAJADOR WHERE ID_T = ?";
 	//PELICULA
 	final String AÑADIR_PELICULA = "INSERT INTO PELICULA (ID_P, NOMBRE, PRECIO, DURACION, CALIFICACION, ID_G, ID_T) VALUES (?,?,?,?,?,?,?)";
 	final String MODIFICAR_PELICULA = "UPDATE PELICULA SET PRECIO=?, CALIFICACION=? WHERE ID_P=?";
 	final String ELIMINAR_PELICULA = "DELETE from PELICULA where ID_P=?";
+	final String EXISTE_PELICULA = "SELECT 1 FROM PELICULA WHERE ID_P = ?";
 	final String LEER_GENERO = "SELECT * from Genero";
     final String LEER_PELICULAS = "SELECT * FROM PELICULA WHERE ID_P NOT IN (SELECT ID_P FROM COMPRA WHERE DNI=?)";
 
@@ -146,27 +148,32 @@ public class DaoImplementacionMSql implements Dao {
 	}
 
 	@Override
-	public void altaTrabajador(Trabajador trab) {
-		openConnection();
-		try {
-			stmt = con.prepareStatement(INSERTAR_TRABAJADOR);
-			stmt.setString(1, trab.getIdentificacion());
-			stmt.setString(2, trab.getContrasenia());
-			stmt.setString(3, trab.getNombre());
-			stmt.setFloat(4, trab.getSueldo());
-			stmt.setString(5, trab.getTipo().toString());
-			stmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				closeConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
+	public boolean altaTrabajador(Trabajador trab) {
+	    openConnection();
+	    boolean insertado = false;
+	    try {
+	        stmt = con.prepareStatement(INSERTAR_TRABAJADOR);
+	        stmt.setString(1, trab.getIdentificacion());
+	        stmt.setString(2, trab.getContrasenia());
+	        stmt.setString(3, trab.getNombre());
+	        stmt.setFloat(4, trab.getSueldo());
+	        stmt.setString(5, trab.getTipo().toString());
+	        int filasAfectadas = stmt.executeUpdate();
+	        if (filasAfectadas > 0) {
+	            insertado = true;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            closeConnection();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return insertado;
 	}
+
 
 	public void comprar(Compra comp) {
 		openConnection();
@@ -188,109 +195,187 @@ public class DaoImplementacionMSql implements Dao {
 	}
 
 	@Override
-	public void modificarTrabajador(Trabajador trab) {
-		openConnection();
-		try {
-			stmt = con.prepareStatement(MODIFICAR_TRABAJADOR);
-			stmt.setString(1, trab.getNombre());
-			stmt.setString(2, trab.getContrasenia());
-			stmt.setFloat(3, trab.getSueldo());
-			stmt.setString(4, trab.getIdentificacion());
-			stmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				closeConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
+	public boolean modificarTrabajador(Trabajador trab) {
+	    openConnection();
+	    boolean modificado = false;
+	    try {
+	        stmt = con.prepareStatement(MODIFICAR_TRABAJADOR);
+	        stmt.setString(1, trab.getNombre());
+	        stmt.setString(2, trab.getContrasenia());
+	        stmt.setFloat(3, trab.getSueldo());
+	        stmt.setString(4, trab.getIdentificacion());
+	        int filasAfectadas = stmt.executeUpdate();
+	        if (filasAfectadas > 0) {
+	            modificado = true;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            closeConnection();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return modificado;
 	}
 
-	@Override
-	public void eliminarTrabajador(Trabajador trab) {
-		openConnection();
-		try {
-			stmt = con.prepareStatement(ELIMINAR_TRABAJADOR);
-			stmt.setString(1, trab.getIdentificacion());
-			stmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				closeConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-	}
 
 	@Override
-	public void añadirPelicula(Pelicula peli) {
-		openConnection();
-		try {
-			stmt = con.prepareStatement(AÑADIR_PELICULA);
-			stmt.setString(1, peli.getIdP());
-			stmt.setString(2, peli.getNombre());
-			stmt.setFloat(3, peli.getPrecio());
-			stmt.setInt(4, peli.getDuracion());
-			stmt.setFloat(5, peli.getCalificacion());
-			stmt.setString(6,peli.getIdG());
-			stmt.setString(7,peli.getIdT());
-			stmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				closeConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
+	public boolean eliminarTrabajador(Trabajador trab) {
+	    openConnection();
+	    boolean eliminado = false;
+	    try {
+	        stmt = con.prepareStatement(ELIMINAR_TRABAJADOR);
+	        stmt.setString(1, trab.getIdentificacion());
+	        int filasAfectadas = stmt.executeUpdate();
+	        if (filasAfectadas > 0) {
+	            eliminado = true; 
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            closeConnection();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return eliminado;
 	}
 	
 	@Override
-	public void modificarPelicula(Pelicula peli) {
-		openConnection();
-		try {
-			stmt = con.prepareStatement(MODIFICAR_PELICULA);
-			stmt.setFloat(1, peli.getPrecio());
-			stmt.setFloat(2, peli.getCalificacion());
-			stmt.setString(3, peli.getIdP());
-			stmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				closeConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
+	public boolean existeTrabajador(String id) {
+	    openConnection();
+	    boolean existe = false;
+	    try {
+	        stmt = con.prepareStatement(EXISTE_TRABAJADOR);
+	        stmt.setString(1, id);
+	        ResultSet rs = stmt.executeQuery();
+	        if (rs.next()) {
+	            existe = true;
+	        }
+	        rs.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            closeConnection();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return existe;
 	}
+
 
 	@Override
-	public void eliminarPeliculas(Pelicula peli) {
-		openConnection();
-		try {
-			stmt = con.prepareStatement(ELIMINAR_PELICULA);
-			stmt.setString(1, peli.getIdP());
-			stmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				closeConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
+	public boolean añadirPelicula(Pelicula peli) {
+	    openConnection();
+	    boolean insertado = false;
+	    try {
+	        stmt = con.prepareStatement(AÑADIR_PELICULA);
+	        stmt.setString(1, peli.getIdP());
+	        stmt.setString(2, peli.getNombre());
+	        stmt.setFloat(3, peli.getPrecio());
+	        stmt.setInt(4, peli.getDuracion());
+	        stmt.setFloat(5, peli.getCalificacion());
+	        stmt.setString(6, peli.getIdG());
+	        stmt.setString(7, peli.getIdT());
+	        
+	        int filasAfectadas = stmt.executeUpdate();
+	        if (filasAfectadas > 0) {
+	            insertado = true; // Si se insertó correctamente
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            closeConnection();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return insertado;
 	}
+
+	
+	@Override
+	public boolean modificarPelicula(Pelicula peli) {
+	    openConnection();
+	    boolean modificado = false;
+	    try {
+	        stmt = con.prepareStatement(MODIFICAR_PELICULA);
+	        stmt.setFloat(1, peli.getPrecio());
+	        stmt.setFloat(2, peli.getCalificacion());
+	        stmt.setString(3, peli.getIdP());
+	        
+	        int filasAfectadas = stmt.executeUpdate();
+	        if (filasAfectadas > 0) {
+	            modificado = true; // Si se actualizó correctamente
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            closeConnection();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return modificado;
+	}
+
+
+	@Override
+	public boolean eliminarPeliculas(Pelicula peli) {
+	    openConnection();
+	    boolean eliminado = false;
+	    try {
+	        stmt = con.prepareStatement(ELIMINAR_PELICULA);
+	        stmt.setString(1, peli.getIdP());
+	        
+	        int filasAfectadas = stmt.executeUpdate();
+	        if (filasAfectadas > 0) {
+	            eliminado = true; // Si se eliminó correctamente
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            closeConnection();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return eliminado;
+	}
+	
+	@Override
+	public boolean existePelicula(String id) {
+	    openConnection();
+	    boolean existe = false;
+	    try {
+	        stmt = con.prepareStatement(EXISTE_PELICULA);
+	        stmt.setString(1, id);
+	        ResultSet rs = stmt.executeQuery();
+	        if (rs.next()) {
+	            existe = true;  // Si hay un resultado, la película existe
+	        }
+	        rs.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            closeConnection();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return existe;
+	}
+
+
 
 	@Override
 	public Map<String, Pelicula> listarPeliculas(Usuario clien) {
@@ -369,30 +454,55 @@ public class DaoImplementacionMSql implements Dao {
 
 	@Override
 	public void altaClientes(Cliente clien) throws DniException {
-		int result;
-		openConnection();
-		try {
-			stmt = con.prepareStatement(INSERTAR_CLIENTE);
-			stmt.setString(1, clien.getIdentificacion());
-			stmt.setString(2, clien.getNombre());
-			stmt.setString(3, clien.getContrasenia());
-			result = stmt.executeUpdate();
-			
-			if (result == 0) {
-				throw new DniException("Introduce el DNI en formato correcto");
-			}
-			
-		} catch (SQLException e) {
-			System.out.println("Error SQL Exception");
-			e.printStackTrace();
-		} finally {
-			try {
-				closeConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
+	    if (existeCliente(clien.getIdentificacion())) {
+	        throw new DniException("Ya existe un cliente con este DNI.");
+	    }
+	    int result;
+	    openConnection();
+	    try {
+	        stmt = con.prepareStatement(INSERTAR_CLIENTE);
+	        stmt.setString(1, clien.getIdentificacion());
+	        stmt.setString(2, clien.getNombre());
+	        stmt.setString(3, clien.getContrasenia());
+	        result = stmt.executeUpdate();
 
+	        if (result == 0) {
+	            throw new DniException("Error al registrar al cliente.");
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            closeConnection();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}
+
+	@Override
+	public boolean existeCliente(String dni) {
+	    openConnection();
+	    boolean existe = false;
+	    try {
+	        stmt = con.prepareStatement("SELECT 1 FROM CLIENTE WHERE DNI = ?");
+	        stmt.setString(1, dni);
+	        ResultSet rs = stmt.executeQuery();
+	        if (rs.next()) {
+	            existe = true; // Si hay un resultado, el cliente ya existe
+	        }
+	        rs.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            closeConnection();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return existe;
 	}
 
 	@Override

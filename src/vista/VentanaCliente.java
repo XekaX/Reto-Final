@@ -90,32 +90,6 @@ public class VentanaCliente extends JDialog implements ActionListener {
 
 	}
 	
-	// Clase personalizada para dibujar la imagen de fondo
-	/*	static class BackgroundPanel extends JPanel {
-			private Image backgroundImage;
 
-			public BackgroundPanel(String imagePath) {
-				try {
-					URL url = getClass().getResource(imagePath);
-					if (url == null) {
-						System.out.println("El archivo no se encuentra.");
-					} else {
-						backgroundImage = new ImageIcon(url).getImage();
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					System.out.println("Error al cargar la imagen: " + e.getMessage());
-				}
-			}
-
-			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				if (backgroundImage != null) {
-					// Dibujar la imagen escalada al tamaño del panel
-					g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), this);
-				}
-			}
-		}*/
 
 }

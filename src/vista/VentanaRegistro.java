@@ -14,6 +14,8 @@ import modelo.Cliente;
 import vista.VentanaLog.BackgroundPanel;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -109,24 +111,33 @@ public class VentanaRegistro extends JDialog implements ActionListener {
 
 	public void actionPerformed(ActionEvent evento) {
 		if (evento.getSource().equals(btnRegistrar)) {
-			try {
-				registrar();
-			} catch (DniException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			registrar();
 
 		}
 	}
 
-	private void registrar() throws DniException {
-		Cliente clien = new Cliente();
-		clien.setIdentificacion(textDni.getText());
-		clien.setNombre(textNombre.getText());
-		clien.setContrasenia(new String(textContraseña.getPassword()));
-		Principal.altaCliente(clien);
-		dispose();
+	private void registrar() {
+	    Cliente clien = new Cliente();
+	    clien.setIdentificacion(textDni.getText());
+	    clien.setNombre(textNombre.getText());
+	    clien.setContrasenia(new String(textContraseña.getPassword()));
+
+	    try {
+	        // Intentar registrar al cliente
+	        Principal.altaCliente(clien);
+	        
+	        // Mostrar mensaje de éxito
+	        JOptionPane.showMessageDialog(this, "Cliente registrado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+	        
+	        // Cerrar la ventana después de registrar correctamente
+	        dispose();
+	    } catch (DniException e) {
+	        // Si ocurre un error, mostramos un mensaje de error
+	        JOptionPane.showMessageDialog(this, "Error: Ya existe un cliente con ese DNI.", "Error", JOptionPane.ERROR_MESSAGE);
+	    }
 	}
+
+
 
 	public static boolean validarDni(String dni) {
 		String dniRegex = "\\d[8][A-H]-NP-TV-Z]";
