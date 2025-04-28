@@ -3,6 +3,7 @@ package controlador;
 import java.util.HashMap;
 import java.util.Map;
 
+import excepciones.DniException;
 import excepciones.LoginException;
 import modelo.Cliente;
 import modelo.Compra;
@@ -27,7 +28,7 @@ public class Principal {
 
 	}
 
-	public static void altaCliente(Cliente clien) {
+	public static void altaCliente(Cliente clien) throws DniException {
 		dao.altaClientes(clien);
 	}
 
@@ -68,6 +69,10 @@ public class Principal {
 	}
 	public static void comprar(Compra comp) {
 		dao.comprar(comp);
+	}
+
+	public static String obtenerMejorPelicula() {
+		return dao.obtenerMejorPelicula();
 	}
 }
 

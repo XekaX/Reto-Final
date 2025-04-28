@@ -40,6 +40,11 @@ public class VentanaPeliculas extends JDialog implements ActionListener {
 	private Usuario clien;
 
 	public VentanaPeliculas(Usuario clien) {
+		
+		setTitle("Tartanga Prime Video - Peliculas");
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setBounds(100, 100, 800, 450);
+        
 		this.clien = clien;
 		presentarTablaPelis();
 		setBounds(100, 100, 599, 437);
@@ -57,26 +62,6 @@ public class VentanaPeliculas extends JDialog implements ActionListener {
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 	}
-
-//	@Override
-//	public void actionPerformed(ActionEvent e) {
-//		String comando = e.getActionCommand();
-//		if ("Comprar".equals(comando)) {
-//			int filaSeleccionada = tablaPelis.getSelectedRow();
-//			if (filaSeleccionada != -1) {
-//				String titulo = tablaPelis.getValueAt(filaSeleccionada, 0).toString();
-//				String precio = tablaPelis.getValueAt(filaSeleccionada, 3).toString();
-//				JOptionPane.showMessageDialog(this, "Has comprado la película: " + titulo + " por $" + precio);
-//
-//				// Aquí podés agregar lógica real de compra: guardar compra, actualizar stock,
-//				// etc.
-//			} else {
-//				JOptionPane.showMessageDialog(this, "Selecciona una película antes de comprar.");
-//
-//			}
-//
-//		}
-//	}
 
 	private void comprar() {
 		int filaSeleccionada = tablaPelis.getSelectedRow();
@@ -108,28 +93,10 @@ public class VentanaPeliculas extends JDialog implements ActionListener {
 		tablaPelis.getColumnModel().getColumn(4).setMinWidth(0);
 		tablaPelis.getColumnModel().getColumn(4).setMaxWidth(0);
 		tablaPelis.getColumnModel().getColumn(4).setWidth(0);
+		
+		String mejorPelicula = Principal.obtenerMejorPelicula();
+	    JOptionPane.showMessageDialog(this, "★ La película mejor valorada es: " + mejorPelicula);
 
-
-		// Agregar MouseListener después de la inicialización
-//		tablaPelis.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//				if (e.getClickCount() == 2) {
-//					int row = tablaPelis.getSelectedRow(); // Usar tablaPelis
-//					if (row != -1) {
-//						// Aquí los valores están en las columnas 0, 1, 2, 3,
-//						String nombre = tablaPelis.getModel().getValueAt(row, 0).toString();
-//						duracion = Integer.parseInt(tablaPelis.getModel().getValueAt(row, 1).toString());
-//						calificacion = Float.parseFloat(tablaPelis.getModel().getValueAt(row, 2).toString());
-//						precio = Float.parseFloat(tablaPelis.getModel().getValueAt(row, 3).toString());
-//
-//						VentanaPelisCompradas ventanaCliente = new VentanaPelisCompradas();
-//						ventanaCliente.añadirPeliculaComprada(nombre, duracion, calificacion, precio);
-//
-//					}
-//				}
-//			}
-//		});
 	}
 
 	private JTable cargarTablaPelis() {

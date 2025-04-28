@@ -3,8 +3,10 @@ package vista;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -12,14 +14,19 @@ import controlador.Principal;
 import modelo.Trabajador;
 import modelo.Tipo;
 import modelo.Usuario;
+import vista.VentanaLog.BackgroundPanel;
 
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.time.LocalDate;
 
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class VentanaAdmin extends JDialog implements ActionListener {
 
@@ -51,82 +58,95 @@ public class VentanaAdmin extends JDialog implements ActionListener {
 	 * Create the dialog.
 	 */
 	public VentanaAdmin() {
-		setBounds(100, 100, 450, 300);
-		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(null);
-		{
-			JLabel lblNewLabel = new JLabel("ID");
-			lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			lblNewLabel.setBounds(83, 61, 83, 22);
-			contentPanel.add(lblNewLabel);
-		}
+		
+		setTitle("Tartanga Prime Video - Admin");
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setBounds(100, 100, 800, 450);
+
+
+		// Fondo con un JPanel personalizado
+		BackgroundPanel backgroundPanel = new BackgroundPanel("/imagenes/fondo_tartanga.png");
+
+		setBounds(100, 100, 800, 450);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setResizable(false);
+		backgroundPanel.setLayout(null);
+		setContentPane(backgroundPanel);
+
+		JLabel lblNewLabel = new JLabel(" ID");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel.setBounds(256, 144, 63, 22);
+		backgroundPanel.add(lblNewLabel);
 
 		JLabel lblNewLabel_1 = new JLabel("Nombre");
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_1.setBounds(83, 93, 73, 22);
-		contentPanel.add(lblNewLabel_1);
+		lblNewLabel_1.setBounds(246, 173, 73, 22);
+		backgroundPanel.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_2 = new JLabel("Sueldo");
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_2.setBounds(83, 155, 63, 22);
-		contentPanel.add(lblNewLabel_2);
+		lblNewLabel_2.setBounds(256, 231, 63, 22);
+		backgroundPanel.add(lblNewLabel_2);
 
 		textID = new JTextField();
 		textID.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		textID.setBounds(176, 65, 120, 19);
-		contentPanel.add(textID);
+		textID.setBounds(329, 146, 120, 19);
+		backgroundPanel.add(textID);
 		textID.setColumns(10);
 
 		textNombre = new JTextField();
 		textNombre.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		textNombre.setBounds(176, 97, 120, 19);
-		contentPanel.add(textNombre);
+		textNombre.setBounds(329, 175, 120, 19);
+		backgroundPanel.add(textNombre);
 		textNombre.setColumns(10);
 
 		textSueldo = new JTextField();
 		textSueldo.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		textSueldo.setBounds(176, 157, 120, 19);
-		contentPanel.add(textSueldo);
+		textSueldo.setBounds(329, 233, 120, 19);
+		backgroundPanel.add(textSueldo);
 		textSueldo.setColumns(10);
 
 		JLabel lblNewLabel_3 = new JLabel("Contraseña");
+		lblNewLabel_3.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_3.setBounds(73, 125, 83, 20);
-		contentPanel.add(lblNewLabel_3);
+		lblNewLabel_3.setBounds(236, 205, 83, 20);
+		backgroundPanel.add(lblNewLabel_3);
 
 		textContraseña = new JTextField();
 		textContraseña.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		textContraseña.setBounds(176, 126, 120, 19);
-		contentPanel.add(textContraseña);
+		textContraseña.setBounds(329, 204, 120, 19);
+		backgroundPanel.add(textContraseña);
 		textContraseña.setColumns(10);
-		
+
 		btnAlta = new JButton("Alta");
 		btnAlta.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnAlta.setBounds(316, 64, 95, 22);
+		btnAlta.setBounds(489, 231, 95, 22);
 		btnAlta.addActionListener(this);
-		contentPanel.add(btnAlta);
-		
-	    btnBaja = new JButton("Baja");
+		backgroundPanel.add(btnAlta);
+
+		btnBaja = new JButton("Baja");
 		btnBaja.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnBaja.setBounds(316, 108, 95, 22);
+		btnBaja.setBounds(489, 144, 95, 22);
 		btnBaja.addActionListener(this);
-		contentPanel.add(btnBaja);
-		
-	    btnModificar = new JButton("Modificar");
+		backgroundPanel.add(btnBaja);
+
+		btnModificar = new JButton("Modificar");
 		btnModificar.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnModificar.setBounds(316, 154, 95, 24);
+		btnModificar.setBounds(489, 185, 95, 24);
 		btnModificar.addActionListener(this);
-		contentPanel.add(btnModificar);
+		backgroundPanel.add(btnModificar);
 
 	}
+
 	public void actionPerformed(ActionEvent evento) {
 		if (evento.getSource().equals(btnAlta)) {
 			alta();
-		} else if (evento.getSource().equals(btnBaja)){
+		} else if (evento.getSource().equals(btnBaja)) {
 			baja();
-		}else if (evento.getSource().equals(btnModificar)){
+		} else if (evento.getSource().equals(btnModificar)) {
 			modificar();
 		}
 	}
@@ -139,7 +159,7 @@ public class VentanaAdmin extends JDialog implements ActionListener {
 		trab.setSueldo(Float.parseFloat(textSueldo.getText()));
 		Principal.modificarTrabajador(trab);
 		dispose();
-		
+
 	}
 
 	private void baja() {
@@ -147,7 +167,7 @@ public class VentanaAdmin extends JDialog implements ActionListener {
 		trab.setIdentificacion(textID.getText());
 		Principal.bajaPropietario(trab);
 		dispose();
-		
+
 	}
 
 	private void alta() {
@@ -155,11 +175,26 @@ public class VentanaAdmin extends JDialog implements ActionListener {
 		trab.setIdentificacion(textID.getText());
 		trab.setNombre(textNombre.getText());
 		trab.setContrasenia(textContraseña.getText());
-		 trab.setSueldo(Float.parseFloat(textSueldo.getText()));
-		 trab.setTipo(Tipo.valueOf("TRABAJADOR"));
+		trab.setSueldo(Float.parseFloat(textSueldo.getText()));
+		trab.setTipo(Tipo.valueOf("TRABAJADOR"));
 		Principal.altaTrabajador(trab);
-		dispose();		
+		dispose();
 
-		
 	}
+
+	// Clase personalizada para dibujar la imagen de fondo
+	/*
+	 * static class BackgroundPanel extends JPanel { private Image backgroundImage;
+	 * 
+	 * public BackgroundPanel(String imagePath) { try { URL url =
+	 * getClass().getResource(imagePath); if (url == null) {
+	 * System.out.println("El archivo no se encuentra."); } else { backgroundImage =
+	 * new ImageIcon(url).getImage(); } } catch (Exception e) { e.printStackTrace();
+	 * System.out.println("Error al cargar la imagen: " + e.getMessage()); } }
+	 * 
+	 * @Override protected void paintComponent(Graphics g) {
+	 * super.paintComponent(g); if (backgroundImage != null) { // Dibujar la imagen
+	 * escalada al tamaño del panel g.drawImage(backgroundImage, 0, 0,
+	 * this.getWidth(), this.getHeight(), this); } } }
+	 */
 }

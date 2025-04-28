@@ -2,6 +2,7 @@ package controlador;
 
 import java.util.Map;
 
+import excepciones.DniException;
 import excepciones.LoginException;
 import modelo.Cliente;
 import modelo.Compra;
@@ -29,7 +30,7 @@ public interface Dao {
 	 
 	 public void eliminarPeliculas (Pelicula peli);
 	 
-	 public void altaClientes(Cliente clien);
+	 public void altaClientes(Cliente clien) throws DniException;
 	 
 	 public Map<String, Genero> listargenero();
 	 
@@ -38,6 +39,8 @@ public interface Dao {
 	public Map<String, Pelicula> listarPeliculas(Usuario clien);
 
 	public Map<String, Pelicula> listarPeliculasCompradas(Usuario usu);
+
+	public String obtenerMejorPelicula();
 
 	
 

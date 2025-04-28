@@ -33,11 +33,15 @@ public class VentanaPelisCompradas extends JDialog {
 	 * /** Create the dialog.
 	 */
 	public VentanaPelisCompradas(Usuario clien) {
+		
+		setTitle("Tartanga Prime Video - Pelis Compradas");
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setBounds(100, 100, 800, 450);
+        
 		this.clien = clien;
 		presentarTablaPelis();
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 599, 437);
 		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setLayout(new FlowLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 
@@ -47,6 +51,7 @@ public class VentanaPelisCompradas extends JDialog {
 	}
 
 	private void presentarTablaPelis() {
+		contentPanel.setLayout(null);
 		contentPanel.setLayout(null);
 		jscroll = new JScrollPane();
 		jscroll.setBounds(0, 0, 585, 213);

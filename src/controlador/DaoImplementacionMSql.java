@@ -9,6 +9,9 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mysql.cj.jdbc.CallableStatement;
+
+import excepciones.DniException;
 import excepciones.LoginException;
 import modelo.Cliente;
 import modelo.Compra;
@@ -63,7 +66,7 @@ public class DaoImplementacionMSql implements Dao {
 
 	@Override
 	public Usuario login(Usuario usuario) throws LoginException {
-		// Tenemos que definie el ResusultSet para recoger el resultado de la consulta
+		// Tenemos que definir el ResusultSet para recoger el resultado de la consulta
 		ResultSet rs = null;
 		Usuario usu = null;
 
@@ -113,6 +116,33 @@ public class DaoImplementacionMSql implements Dao {
 			}
 		}
 		return usu;
+	}
+	
+	public String obtenerMejorPelicula() {
+	    String mejorPelicula = null;
+	    ResultSet rs = null;
+	    openConnection();
+	    try {
+	        // IMPORTANTE: Cambiar a CallableStatement
+	        CallableStatement callStmt = (CallableStatement) con.prepareCall("{? = call MEJORPELICULA()}");
+	        callStmt.registerOutParameter(1, java.sql.Types.VARCHAR);
+	        callStmt.execute();
+	        
+	        mejorPelicula = callStmt.getString(1);
+	        
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) {
+	                rs.close();
+	            }
+	            closeConnection();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return mejorPelicula;
 	}
 
 	@Override
@@ -338,14 +368,20 @@ public class DaoImplementacionMSql implements Dao {
 	}
 
 	@Override
-	public void altaClientes(Cliente clien) {
+	public void altaClientes(Cliente clien) throws DniException {
+		int result;
 		openConnection();
 		try {
 			stmt = con.prepareStatement(INSERTAR_CLIENTE);
 			stmt.setString(1, clien.getIdentificacion());
 			stmt.setString(2, clien.getNombre());
 			stmt.setString(3, clien.getContrasenia());
-			stmt.executeUpdate();
+			result = stmt.executeUpdate();
+			
+			if (result == 0) {
+				throw new DniException("Introduce el DNI en formato correcto");
+			}
+			
 		} catch (SQLException e) {
 			System.out.println("Error SQL Exception");
 			e.printStackTrace();
