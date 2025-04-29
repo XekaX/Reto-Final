@@ -62,7 +62,7 @@ public class Principal {
 	}
 	
 	public static boolean existePelicula(String id) {
-	    return dao.existeTrabajador(id);
+	    return dao.existePelicula(id);
 	}
 	
 	public static Map<String, Genero> recibirMapaGenero() {
